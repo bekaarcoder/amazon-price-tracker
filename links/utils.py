@@ -17,6 +17,8 @@ def get_url_data(url):
     price = soup.select_one("#priceblock_dealprice")
     if price is None:
         price = soup.select_one("#priceblock_ourprice")
+        if price is None:
+            price = soup.select_one("#priceblock_saleprice")
     price = price.get_text().strip()
     price = float(price[2:].replace(",", ""))
 
