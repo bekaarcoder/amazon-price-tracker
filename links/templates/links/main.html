@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load colorize %}
 
 {% block content %} 
     <!-- Modal -->
@@ -22,40 +23,39 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>Amazon Price Tracker</h2>
-        </div>
-        <div class="row mt-3 align-items-center">
-            <div class="col-md-6">
-                <a href="{% url 'update' %}" class="btn btn-outline-success">Update</a>
-                <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#addItemModal">Add URL</button>
+            <div class="row mt-3 align-items-center">
+                <div class="col-md-6">
+                    <a href="{% url 'update' %}" class="btn btn-outline-success">Update</a>
+                    <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#addItemModal">Add URL</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-end"><strong>Total items being tracked: </strong>{{items_no}}</div>
+                    <div class="text-end"><strong>Discounted items: </strong>{{no_discounted}}</div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="text-end"><strong>Total items being tracked: </strong>{{items_no}}</div>
-                <div class="text-end"><strong>Discounted items: </strong>{{no_discounted}}</div>
-            </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <div class="col-md-12">
+            <div class="row justify-content-center">
                 {% if links %}
-                  {% for link in links %}
-                    <div class="card my-3">
-                        <div class="card-header">
-                            {{link.name}}
-                        </div>
-                        <div class="card-body">
-                            <blockquote class="blockquote">
-                                <p><strong>Current Price: </strong>Rs. {{link.current_price}}</p>
-                                <p><strong>Old Price: </strong>Rs. {{link.old_price}}</p>
-                                <p><strong>Price Difference: </strong>Rs. {{link.price_difference}}</p>
-                                <p><strong>URL: </strong><a href="{{link.url}}" target="_blank">Visit Url</a></p>
-                            </blockquote>
+                    {% for link in links %}
+                    <div class="col-md-5">
+                        <div class="card my-3">
+                            <div class="card-header">
+                                {{link.name}}
+                            </div>
+                            <div class="card-body">
+                                <div><strong>Current Price: </strong>Rs. {{link.current_price}}</div>
+                                <div><strong>Old Price: </strong>Rs. {{link.old_price}}</div>
+                                <div><strong>Price Difference: </strong>Rs. {{link.price_difference | colorize}}</div>
+                                <div><strong>URL: </strong><a href="{{link.url}}" target="_blank">Visit Url</a></div>
+                                <a href="{% url 'delete' link.id %}" class="btn btn-outline-danger mt-3">Delete</a>
+                            </div>
                         </div>
                     </div>
-                  {% endfor %}
+                    {% endfor %}
                 {% else %}
-                  <p class="lead">No items are being tracked</p>
-                {% endif %}
-                
+                    <p class="lead">No items are being tracked</p>
+                {% endif %}               
             </div>
         </div>
     </div> 

@@ -46,3 +46,14 @@ def update_items(request):
     for link in links:
         link.save()
     return redirect("home")
+
+
+def delete_item(request, id):
+    link = Link.objects.get(pk=id)
+    context = {"link": link}
+
+    if request.method == "POST":
+        link.delete()
+        return redirect("home")
+
+    return render(request, "links/delete.html", context)
